@@ -27,12 +27,24 @@ def cargar_vector():
             v.append(ticket)
     m.close()
     return v
+    
+def ordenar_vector(v)
+    n = len(v)
+    for i in range(n - 1):
+        for j in range(i + 1, n):
+            if v[i].codigo > v[j].codigo:
+                v[i], v[j] = v[j], v[i]
 
+def mostrar_datos(v)
+ordenar_vector(v)
+for i in range(len(v)):
+    print(v[i])
 
 def principal():
     # opcion 1
     v = cargar_vector()
-    print(v)
+    # opcion 3
+    mostrar_datos(v)
 
 
 if _name_ == '__main__':
