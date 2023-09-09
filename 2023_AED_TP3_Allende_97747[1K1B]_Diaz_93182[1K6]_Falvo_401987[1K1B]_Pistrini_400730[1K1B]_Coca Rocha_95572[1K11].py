@@ -41,7 +41,7 @@ def ordenar_vector(v)
 def buscar_patente(v):
     patente = input("Ingrese la patente a buscar: ")
     pais = int(input("Ingrese el pais por el que paso la patente: "))
-    if v != []:
+    if v != []: # le estoy cambiando una cosa no esta aun
         for i in range(len(v)):
             if patente == v[i].patente and pais == v[i].pais:
                 print(v[i])  
