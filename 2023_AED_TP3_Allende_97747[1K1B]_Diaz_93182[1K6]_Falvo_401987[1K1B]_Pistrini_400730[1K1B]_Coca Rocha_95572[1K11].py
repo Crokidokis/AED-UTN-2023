@@ -14,7 +14,7 @@ class Ticket:
 def cargar_vector():
     primera = True
     v = []
-    m = open('peajes-tp3.txt', 'rt')
+    m = open('peajes-tp3.txt','rt')
     for linea in m:
         if primera:
             primera = False
@@ -86,9 +86,9 @@ def buscar_patente(v):
     for i in range(len(v)):
         if p == v[i].patente and x == v[i].pais:
             print(v[i])
-            existe = True  
+            existe = True
             break
-    if not existe:     
+    if not existe:
         print("No hay resultados")
 
 def mostrar_datos(v):
@@ -96,13 +96,61 @@ def mostrar_datos(v):
     for i in range(len(v)):
         print(v[i])
 
+
 def principal():
-    # opcion 1
-    v = cargar_vector()
-    # opcion 3
-    mostrar_datos(v)
-    # opcion 4
-    buscar_patente(v)
+
+    v = []  # Inicia el arreglo de registros vacío
+
+    while True:
+        print("\nMenu de opciones:")
+        print("1. Crear arreglo de registros desde el archivo")
+        print("2. Cargar nuevo ticket")
+        print("3. Mostrar todos registros ordenados por ticket")
+        print("4. Buscar por patente y país")
+        print("5. Cambiar forma de pago por código de ticket")
+        print("6. Cantidad de vehículos por país")
+        print("7. Calcular importe acumulado por tipo de vehículo")
+        print("8. Vehículo con mayor monto y su porcentaje")
+        print("9. Distancia promedio y vehículos que la superan")
+        print("10. Salir")
+
+        opcion = input("Seleccione una opción: ")
+
+        if opcion == "1":
+            v = cargar_vector()
+            print("Arreglo de registros creado desde el archivo.")
+
+        elif opcion == "2":
+            cargar_ticket_por_teclado(v)
+
+        elif opcion == "3":
+            mostrar_datos(v)
+
+        elif opcion == "4":
+            buscar_patente(v)
+
+        elif opcion == "5":
+            # Implementa la opción para cambiar la forma de pago por código de ticket
+            pass
+
+        elif opcion == "6":
+            contar_vehiculos_por_pais(v)
+
+        elif opcion == "7":
+            calcular_importe_acumulado(v)
+
+        elif opcion == "8":
+            tipo_vehiculo_con_mayor_monto(v)
+
+        elif opcion == "9":
+            distancia_promedio(v)
+
+        elif opcion == "10":
+            print("Usted a salido del programa")
+            break
+
+        else:
+            print("Opción no inválida.seleccione una opción válida.")
 
 
 if __name__ == '__main__':
