@@ -38,6 +38,17 @@ def ordenar_vector(v)
             if v[i].codigo > v[j].codigo:
                 v[i], v[j] = v[j], v[i]
 
+def buscar_patente(v):
+    patente = input("Ingrese la patente a buscar: ")
+    pais = int(input("Ingrese el pais por el que paso la patente: "))
+    if v != []:
+        for i in range(len(v)):
+            if patente == v[i].patente and pais == v[i].pais:
+                print(v[i])  
+                break     
+    else:
+        print("No hay datos")
+
 def mostrar_datos(v)
 ordenar_vector(v)
 for i in range(len(v)):
@@ -48,6 +59,8 @@ def principal():
     v = cargar_vector()
     # opcion 3
     mostrar_datos(v)
+    # opcion 4
+    buscar_patente(v)
 
 
 if _name_ == '__main__':
