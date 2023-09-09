@@ -80,15 +80,16 @@ def ordenar_vector(v):
                 v[i], v[j] = v[j], v[i]
 
 def buscar_patente(v):
-    patente = input("Ingrese la patente a buscar: ")
-    pais = int(input("Ingrese el pais por el que paso la patente: "))
-    if v != []: # le estoy cambiando una cosa no esta aun
-        for i in range(len(v)):
-            if patente == v[i].patente and pais == v[i].pais:
-                print(v[i])  
-                break     
-    else:
-        print("No hay datos")
+    p = input("Ingrese la patente a buscar: ")
+    x = int(input("Ingrese el pais por el que paso la patente: "))
+    existe = False
+    for i in range(len(v)):
+        if p == v[i].patente and x == v[i].pais:
+            print(v[i])
+            existe = True  
+            break
+    if not existe:     
+        print("No hay resultados")
 
 def mostrar_datos(v):
     ordenar_vector(v)
