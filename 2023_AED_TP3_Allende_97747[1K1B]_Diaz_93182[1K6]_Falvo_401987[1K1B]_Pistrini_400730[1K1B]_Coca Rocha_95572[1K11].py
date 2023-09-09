@@ -13,18 +13,21 @@ class Ticket:
 
 
 def cargar_vector():
+    primera = True
     v = []
     m = open('peajes-tp3.txt', 'rt')
     for linea in m:
-        if linea != 0:
-            codigo = linea[0:10]
+        if primera:
+            primera = False
+        elif not primera:
+            codigo = int(linea[0:10])
             patente = linea[10:17]
             vehiculo = int(linea[17])
             pago = int(linea[18])
             pais = int(linea[19])
-            distancia = int(linea[20:23])
-            ticket = Ticket(codigo, patente, vehiculo, pago, pais, distancia)
-            v.append(ticket)
+            distancia = int(linea[20:])
+            t = Ticket(codigo, patente, vehiculo, pago, pais, distancia)
+            v.append(t)
     m.close()
     return v
     
