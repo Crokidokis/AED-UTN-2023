@@ -183,10 +183,58 @@ def conteo_autos_por_pais(v): # Punto 6
         print(f"País: {pais} | Cantidad de autos: {cantidad}")
 
 def calcular_importe_acumulado(v): #Punto 7
-    pass
+    acumulado_tipo_0 = 0
+    acumulado_tipo_1 = 0
+    acumulado_tipo_2 = 0
+    
+    for ticket in v:
+        if ticket.tipo_vehiculo == 0:
+            acumulado_tipo_0 += ticket.pago
+        elif ticket.tipo_vehiculo == 1:
+            acumulado_tipo_1 += ticket.pago
+        elif ticket.tipo_vehiculo == 2:
+            acumulado_tipo_2 += ticket.pago
+
+    print("Importe acumulado por tipo de vehículo:")
+    print("Motocicletas (Tipo 0):", acumulado_tipo_0)
+    print("Automóviles (Tipo 1):", acumulado_tipo_1)
+    print("Camiones (Tipo 2):", acumulado_tipo_2)
 
 def tipo_vehiculo_con_mayor_monto(v): #Punto 8
-    pass
+    total_tipo_0 = 0
+    total_tipo_1 = 0
+    total_tipo_2 = 0
+    
+    for ticket in v:
+        if ticket.tipo_vehiculo == 0:
+            total_tipo_0 += ticket.pago
+        elif ticket.tipo_vehiculo == 1:
+            total_tipo_1 += ticket.pago
+        elif ticket.tipo_vehiculo == 2:
+            total_tipo_2 += ticket.pago
+    
+    tipo_con_mayor_monto = None
+    monto_mayor = 0
+    
+    if total_tipo_0 > monto_mayor:
+        monto_mayor = total_tipo_0
+        tipo_con_mayor_monto = "Motocicletas (Tipo 0)"
+    
+    if total_tipo_1 > monto_mayor:
+        monto_mayor = total_tipo_1
+        tipo_con_mayor_monto = "Automóviles (Tipo 1)"
+    
+    if total_tipo_2 > monto_mayor:
+        monto_mayor = total_tipo_2
+        tipo_con_mayor_monto = "Camiones (Tipo 2)"
+    
+    if tipo_con_mayor_monto is not None:
+        porcentaje = (monto_mayor / sum([total_tipo_0, total_tipo_1, total_tipo_2])) * 100
+        print("El tipo de vehículo con mayor monto es:", tipo_con_mayor_monto)
+        print("Monto acumulado:", monto_mayor)
+        print("Porcentaje sobre el total:", round(porcentaje, 2), "%")
+    else:
+        print("No hay registros de vehículos.")
 
 
 def promediar_distancia(v): #Punto 9
