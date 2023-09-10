@@ -144,7 +144,6 @@ def buscar_patente(v): # Punto 4
 
 
 def buscar_codigo(v): # Punto 5
-    ordenar_vector(v)
     c = input("Ingrese un codigo a buscar en el registro:")
     while not c.isdigit():
         print("El código debe ser numérico.")
