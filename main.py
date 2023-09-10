@@ -149,24 +149,18 @@ def buscar_codigo(v): # Punto 5
     while not c.isdigit():
         print("El código debe ser numérico.")
         c = input("Ingrese un codigo a buscar en el registro:")
-    izq, der = 0, len(v) - 1
     existe = False
-    while izq <= der: # and not romper:
-        x = (izq + der) // 2
-        if c == v[x].codigo:
+    for i in range(len(v)):
+        if c == v[i].codigo:
             existe = True
-            if v[x].pago == 1:
-                v[x].pago = 2
-                print("Se cambio el pago de", v[x].codigo, "de 1 a 2:\n", v[x])
+            if v[i].pago == 1:
+                v[i].pago = 2
+                print("Se cambio el pago de", v[i].codigo, "de 1 a 2:\n", v[i])
                 break
             else:
-                v[x].pago = 1
-                print("Se cambio el pago de", v[x].codigo, "de 2 a 1:\n", v[x])
+                v[i].pago = 1
+                print("Se cambio el pago de", v[i].codigo, "de 2 a 1:\n", v[i])
                 break
-        if c < v[x].codigo:
-            der = x - 1
-        else:
-            izq = x + 1
     if not existe:
         print("No hay resultados")
 
