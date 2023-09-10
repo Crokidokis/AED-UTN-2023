@@ -97,6 +97,24 @@ def mostrar_datos(v):
         print(v[i])
 
 
+def conteo_autos_por_pais(v):
+    contar_por_pais_auto = {}
+
+    for ticket in v:
+        pais = ticket.pais
+
+        if pais not in contar_por_pais_auto:
+            contar_por_pais_auto[pais] = 1
+        else:
+
+            contar_por_pais_auto[pais] += 1
+
+
+    for pais, cantidad in contar_por_pais_auto.items():
+        print(f"País: {pais} | Cantidad de autos: {cantidad}")
+
+
+
 def principal():
 
     v = []  # Inicia el arreglo de registros vacío
@@ -134,7 +152,7 @@ def principal():
             pass
 
         elif opcion == "6":
-            contar_vehiculos_por_pais(v)
+            conteo_autos_por_pais(v)
 
         elif opcion == "7":
             calcular_importe_acumulado(v)
