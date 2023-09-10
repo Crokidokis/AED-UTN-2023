@@ -33,17 +33,17 @@ def cargar_ticket_por_teclado(v): #Punto 2
         patente = input("Ingrese la patente del vehículo (7 carácteres): ")
 
     tipo_vehiculo = int(input("Ingrese el tipo de vehículo (0: motocicleta, 1: automóvil, 2: camión): "))
-    while tipo_vehiculo not in ['0', '1', '2']:
+    while tipo_vehiculo not in [0, 1, 2]:
         print("Tipo de vehículo inválido, ingrese el valor correctamente.")
         tipo_vehiculo = input("Ingrese el tipo de vehículo (0: motocicleta, 1: automóvil, 2: camión): ")
 
     forma_pago = int(input("Ingrese la forma de pago (1: manual, 2: telepeaje): "))
-    while forma_pago not in ['1', '2']:
+    while forma_pago not in [1, 2]:
         print("La forma de pago debe ser 1 o 2.")
         forma_pago = input("Ingrese la forma de pago (1: manual, 2: telepeaje): ")
 
     pais = int(input("Ingrese el país de la cabina (0: Argentina, 1: Bolivia, 2: Brasil, 3: Paraguay, 4: Uruguay): "))
-    while pais not in ['0', '1', '2', '3', '4']:
+    while pais not in [0, 1, 2, 3, 4]:
         print("País incorrecto, ingrese uno válido.")
         pais = input("Ingrese el país de la cabina (0: Argentina, 1: Bolivia, 2: Brasil, 3: Paraguay, 4: Uruguay): ")
 
