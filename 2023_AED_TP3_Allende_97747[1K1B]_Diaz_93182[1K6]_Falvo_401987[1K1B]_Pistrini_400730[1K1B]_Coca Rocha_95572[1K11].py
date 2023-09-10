@@ -103,10 +103,10 @@ def cambiar_forma_pago(v): # 5
             romper = existe = True
             if v[x].pago == 1:
                 v[x].pago = 2
-                break
+                #break
             else:
                 v[x].pago = 1
-                break
+                #break
         if c < v[x].codigo:
             der = x - 1
         else:
