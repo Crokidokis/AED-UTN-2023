@@ -1,5 +1,6 @@
 from ticket import Ticket
 
+
 def cargar_vector(): #Punto 1
     primera = True
     v = []
@@ -8,29 +9,33 @@ def cargar_vector(): #Punto 1
         if primera:
             primera = False
         elif not primera:
-            codigo = int(linea[0:10])
+            codigo = linea[0:10]
             patente = linea[10:17]
+            pais_patente = None
             vehiculo = int(linea[17])
             pago = int(linea[18])
             pais = int(linea[19])
             distancia = int(linea[20:])
-            t = Ticket(codigo, patente, vehiculo, pago, pais, distancia)
+            t = Ticket(codigo, patente, pais_patente, vehiculo, pago, pais, distancia)
             v.append(t)
     m.close()
     return v
 #OJO cada vez que se elija la opción "Crear arreglo desde registros" el arreglo debe ser creado de nuevo desde cero, perdiendo todos los registros que ya hubiese contenido.
 #Falta implementar funcionalidad: Antes de eliminar el viejo arreglo, se muestre en pantalla un mensaje de advertencia al usuario de forma que tenga la opción de cancelar la operación.
 
-def cargar_ticket_por_teclado(v): #Punto 2
-    codigo = (input("Ingrese el código del ticket (debe tener 10 dígitos y ser numérico):"))
-    while not codigo.isdigit() or len(codigo) != 10:
-        print("El código del ticket debe tener 10 dígitos y ser numérico.")
-        codigo = input("Ingrese el código del ticket (debe tener 10 dígitos y ser numérico):")
 
-    patente = input("Ingrese la patente del vehículo (7 carácteres):")
-    while len(patente) != 7:
-        print("La patente debe tener 7 carácteres.")
-        patente = input("Ingrese la patente del vehículo (7 carácteres): ")
+def cargar_ticket_por_teclado(v): # Punto 2
+    codigo = input("Ingrese el código del ticket (debe ser numérico):")
+    while not codigo.isdigit():
+        print("El código tiene que ser numérico.")
+        codigo = input("Ingrese el código del ticket (debe ser numérico):")
+
+    patente = input("Ingrese la patente del vehículo:")
+    while not patente.isdigit() and patente.isalpha():
+        print("La patente debe tener SOLO numeros y/o letras.")
+        patente = input("Ingrese la patente del vehículo: ")
+
+    pais_patente = 0
 
     tipo_vehiculo = (input("Ingrese el tipo de vehículo (0: motocicleta, 1: automóvil, 2: camión): "))
     while tipo_vehiculo not in ['0', '1', '2']:
@@ -50,53 +55,103 @@ def cargar_ticket_por_teclado(v): #Punto 2
         pais = input("Ingrese el país de la cabina (0: Argentina, 1: Bolivia, 2: Brasil, 3: Paraguay, 4: Uruguay): ")
     pais = int(pais)
 
-    distancia = (input("Ingrese la distancia en kilómetros (debe tener 3 dígitos, 000 si es la primera cabina): "))
-    while not distancia.isdigit() or len(distancia) != 3:
-        print("La distancia debe ser un número entero de 3 dígitos.")
-        distancia = input("Ingrese la distancia en kilómetros (debe tener 3 dígitos, 000 si es la primera cabina): ")
+    distancia = (input("Ingrese la distancia en kilómetros (000 si es la primera cabina): "))
+    while not distancia.isdigit():
+        print("Ingresar solo números.")
+        distancia = input("Ingrese la distancia en kilómetros (000 si es la primera cabina): ")
     distancia = int(distancia)
 
-    nuevo_ticket = Ticket(codigo, patente, tipo_vehiculo, forma_pago, pais, distancia)
+    nuevo_ticket = Ticket(codigo, patente, pais_patente, tipo_vehiculo, forma_pago, pais, distancia)
     v.append(nuevo_ticket)
     print("Ticket agregado exitosamente.")
 
-def ordenar_vector(v): #Punto 3
+
+def ordenar_vector(v): # Punto 3
+    determinar_pais(v)
     n = len(v)
     for i in range(n - 1):
         for j in range(i + 1, n):
-            if v[i].codigo > v[j].codigo:
+            if int(v[i].codigo) > int(v[j].codigo):
                 v[i], v[j] = v[j], v[i]
+
+
 def mostrar_datos(v):
     ordenar_vector(v)
     for i in range(len(v)):
         print(v[i])
 
-def buscar_patente(v): #Punto 4
-    p = input("Ingrese la patente a buscar (7 carácteres):")
-    while len(p) != 7:
-        print("La patente debe tener 7 carácteres.")
-        p = input("Ingrese la patente a buscar (7 carácteres):")
+
+def determinar_pais(v):
+    for i in range(len(v)):
+        patente = v[i].patente
+        if patente[0] == ' ':
+            if 'A' <= patente[1] <= 'Z' and 'A' <= patente[2] <= 'Z' and 'A' <= patente[3] <= 'Z' and 'A' <= patente[4] \
+                    <= 'Z':
+                if '0' <= patente[5] <= '9' and '0' <= patente[5] <= '9':
+                    pais_patente = 'Chile'
+                else:
+                    pais_patente = 'Otro'
+            else:
+                pais_patente = 'Otro'
+        elif 'A' <= patente[0] <= 'Z' and 'A' <= patente[1] <= 'Z':
+            if '0' <= patente[2] <= '9':
+                if '0' <= patente[3] <= '9' and '0' <= patente[4] <= '9':
+                    if '0' <= patente[5] <= '9' and '0' <= patente[5] <= '9':
+                        pais_patente = 'Bolivia'
+                    elif 'A' <= patente[5] <= 'Z' and 'A' <= patente[5] <= 'Z':
+                        pais_patente = 'Argentina'
+                    else:
+                        pais_patente = 'Otro'
+                else:
+                    pais_patente = 'Otro'
+            elif 'A' <= patente[3] <= 'Z':
+                if '0' <= patente[4] <= '9' and '0' <= patente[5] <= '9' and '0' <= patente[5] <= '9':
+                    pais_patente = 'Paraguay'
+                else:
+                    pais_patente = 'Otro'
+            elif '0' <= patente[4] <= '9':
+                if '0' <= patente[5] <= '9' and '0' <= patente[5] <= '9':
+                    pais_patente = 'Uruguay'
+                else:
+                    pais_patente = 'Otro'
+            elif '0' <= patente[5] <= '9' and '0' <= patente[5] <= '9':
+                pais_patente = 'Brasil'
+            else:
+                pais_patente = 'Otro'
+        else:
+            pais_patente = 'Otro'
+        v[i].pais_patente = pais_patente
+
+
+def buscar_patente(v): # Punto 4
+    determinar_pais(v)
+    patente = input("Ingrese la patente a buscar:")
+    while not patente.isdigit() and patente.isalpha():
+        print("La patente debe tener SOLO numeros y/o letras.")
+        patente = input("Ingrese la patente a buscar: ")
     x = int(input("Ingrese el pais por el que paso la patente (0: Argentina, 1: Bolivia, 2: Brasil, 3: Paraguay, 4: Uruguay):"))
     while x not in [0, 1, 2, 3, 4]:
         print("País incorrecto, ingrese uno válido.")
         x = int(input("Ingrese el pais por el que paso la patente (0: Argentina, 1: Bolivia, 2: Brasil, 3: Paraguay, 4: Uruguay):"))
     existe = False
     for i in range(len(v)):
-        if p == v[i].patente and x == v[i].pais:
+        if patente == v[i].patente and x == v[i].pais:
             print(v[i])
             existe = True
             break
     if not existe:
         print("No hay resultados")
 
+
 def buscar_codigo(v): # Punto 5
-    c = int(input("Ingrese un codigo a buscar en el registro (debe tener 10 dígitos numéricos:"))
-    while not c.isdigit() or len(c) != 10:
-        print("El código del ticket debe tener 10 dígitos numéricos.")
-        c = int(input("Ingrese un codigo a buscar en el registro (debe tener 10 dígitos numéricos:"))
+    ordenar_vector(v)
+    c = input("Ingrese un codigo a buscar en el registro:")
+    while not c.isdigit():
+        print("El código debe ser numérico.")
+        c = input("Ingrese un codigo a buscar en el registro:")
     izq, der = 0, len(v) - 1
     existe = False
-    while izq <= der: #and not romper:
+    while izq <= der: # and not romper:
         x = (izq + der) // 2
         if c == v[x].codigo:
             existe = True
@@ -115,7 +170,8 @@ def buscar_codigo(v): # Punto 5
     if not existe:
         print("No hay resultados")
 
-def conteo_autos_por_pais(v): #Punto 6
+
+def conteo_autos_por_pais(v): # Punto 6
     contar_por_pais_auto = {}
     for ticket in v:
         pais = ticket.pais
@@ -142,8 +198,10 @@ def promediar_distancia(v): #Punto 9
     promedio = suma / contador if contador > 0 else 0
     # Llama a la función supera_promedio para contar vehículos que superaron el promedio
     vehiculos_superan = supera_promedio(v, promedio)
-    print(f"Promedio de distancia: {promedio}")
+    print(f"Promedio de distancia: {promedio} km")
     print(f"Cantidad de vehículos que superaron el promedio: {vehiculos_superan}")
+
+
 def supera_promedio(v, prom):
     acu_punto_9 = 0
     for i in range(len(v)):
@@ -152,10 +210,10 @@ def supera_promedio(v, prom):
     return acu_punto_9
 
 
-def principal(): #Menu de opciones
+def principal(): # Menu de opciones
     v = []
     while True:
-        print("\nMenu de opciones:")
+        print("\nMENU DE OPCIONES:")
         print("1. Crear arreglo de registros desde el archivo")
         print("2. Cargar nuevo ticket")
         print("3. Mostrar todos registros ordenados por ticket")
@@ -168,14 +226,26 @@ def principal(): #Menu de opciones
         print("10. Salir")
         opcion = input("Seleccione una opción: ")
         if opcion == "1":
-            v = cargar_vector()
-            print("Arreglo de registros creado desde el archivo.")
+            print('-' * 50, '\nPUNTO 1\n', '-' * 50)
+            print('AVISO: Elegir esta opción borrará los datos cargados anteriormente.\nVolver: 0\nContinuar: 1')
+            opcion = int(input('¿Desea continuar?: '))
+            if opcion == 1:
+                v = cargar_vector()
+                print("Arreglo de registros creado desde el archivo.")
+                print('-' * 50)
+            else:
+                pass
         # OJO cada vez que se elija la opción "Crear arreglo desde registros" el arreglo debe ser creado de nuevo desde cero, perdiendo todos los registros que ya hubiese contenido.
         # Falta implementar funcionalidad: Antes de eliminar el viejo arreglo, se muestre en pantalla un mensaje de advertencia al usuario de forma que tenga la opción de cancelar la operación.
         elif opcion == "2":
+            print('-' * 50, '\nPUNTO 2\n', '-' * 50)
             cargar_ticket_por_teclado(v)
+            print('Datos cargados con exito')
+            print('-' * 50)
         elif opcion == "3": #Introducir mensaje de error cuando se seleccione la opcion 3 sin haber realizado un  arreglo (osea haber elegido la opcion 1)
+            print('-' * 150, '\nPUNTO 3\n', '-' * 150)
             mostrar_datos(v)
+            print('-' * 150)
         elif opcion == "4":
             buscar_patente(v)
         elif opcion == "5":
@@ -193,6 +263,7 @@ def principal(): #Menu de opciones
             break
         else:
             print("Opción inválida, porfavor seleccione una opción válida.")
+
 
 if __name__ == '__main__':
     principal()
