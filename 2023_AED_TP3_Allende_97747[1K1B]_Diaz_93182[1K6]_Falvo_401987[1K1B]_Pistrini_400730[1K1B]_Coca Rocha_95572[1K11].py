@@ -79,7 +79,7 @@ def ordenar_vector(v):
             if v[i].codigo > v[j].codigo:
                 v[i], v[j] = v[j], v[i]
 
-def buscar_patente(v):
+def buscar_patente(v): # 4
     p = input("Ingrese la patente a buscar: ")
     x = int(input("Ingrese el pais por el que paso la patente: "))
     existe = False
@@ -91,11 +91,34 @@ def buscar_patente(v):
     if not existe:
         print("No hay resultados")
 
+def cambiar_forma_pago(v): # 5
+    c = int(input("Ingrese un codigo a buscar en el registro: "))
+    while c <= 0:
+        c = int(input("Ingrese un codigo a buscar en el registro: "))
+    izq, der = 0, len(v) - 1
+    romper = existe =False
+    while izq <= der and not romper:
+        x = (izq + der) // 2
+        if c == v[x].codigo:
+            romper = existe = True
+            if v[x].pago == 1:
+                v[x].pago = 2
+                break
+            else:
+                v[x].pago = 1
+                break
+        if c < v[x].codigo:
+            der = x - 1
+        else:
+            izq = x + 1
+    if not existe:     
+        print("No hay resultados")
+
 def mostrar_datos(v):
     ordenar_vector(v)
     for i in range(len(v)):
         print(v[i])
-
+        
 
 def conteo_autos_por_pais(v):
     contar_por_pais_auto = {}
@@ -149,7 +172,7 @@ def principal():
 
         elif opcion == "5":
             # Implementa la opción para cambiar la forma de pago por código de ticket
-            pass
+            cambiar_forma_pago(v)
 
         elif opcion == "6":
             conteo_autos_por_pais(v)
