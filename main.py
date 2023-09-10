@@ -128,8 +128,25 @@ def calcular_importe_acumulado(v): #Punto 7
 def tipo_vehiculo_con_mayor_monto(v): #Punto 8
     pass
 
-def distancia_promedio(v): #Punto 9
-    pass
+
+def promediar_distancia(v): #Punto 9
+    suma = 0
+    contador = 0
+    for i in range(len(v)):
+        suma += v[i].distancia
+        contador += 1
+    promedio = suma / contador if contador > 0 else 0
+    # Llama a la función supera_promedio para contar vehículos que superaron el promedio
+    vehiculos_superan = supera_promedio(v, promedio)
+    print(f"Promedio de distancia: {promedio}")
+    print(f"Cantidad de vehículos que superaron el promedio: {vehiculos_superan}")
+def supera_promedio(v, prom):
+    acu_punto_9 = 0
+    for i in range(len(v)):
+        if v[i].distancia > prom:
+            acu_punto_9 += 1
+    return acu_punto_9
+
 
 def principal(): #Menu de opciones
     v = []
@@ -166,7 +183,7 @@ def principal(): #Menu de opciones
         elif opcion == "8":
             tipo_vehiculo_con_mayor_monto(v)
         elif opcion == "9":
-            distancia_promedio(v)
+            promediar_distancia(v)
         elif opcion == "10":
             print("Usted a salido del programa")
             break
