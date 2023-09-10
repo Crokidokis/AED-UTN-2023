@@ -30,6 +30,9 @@ def cargar_vector():
     m.close()
     return v
 
+def validacion(): 
+    pass
+    
 def cargar_ticket_por_teclado(v):
     codigo = input("Ingrese el código del ticket: ")
     while not codigo.isdigit() or len(codigo) != 10:
@@ -91,22 +94,22 @@ def buscar_patente(v): # 4
     if not existe:
         print("No hay resultados")
 
-def cambiar_forma_pago(v): # 5
+def buscar_codigo(v): # 5
     c = int(input("Ingrese un codigo a buscar en el registro: "))
-    while c <= 0:
-        c = int(input("Ingrese un codigo a buscar en el registro: "))
     izq, der = 0, len(v) - 1
-    romper = existe =False
-    while izq <= der and not romper:
+    existe = False
+    while izq <= der: #and not romper:
         x = (izq + der) // 2
         if c == v[x].codigo:
-            romper = existe = True
+            existe = True
             if v[x].pago == 1:
                 v[x].pago = 2
-                #break
+                print("Se cambio el pago de", v[x].codigo, "de 1 a 2:\n", v[x])
+                break
             else:
                 v[x].pago = 1
-                #break
+                print("Se cambio el pago de", v[x].codigo, "de 2 a 1:\n", v[x])
+                break
         if c < v[x].codigo:
             der = x - 1
         else:
