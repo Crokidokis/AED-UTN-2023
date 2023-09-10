@@ -128,7 +128,7 @@ def calcular_importe_acumulado(v): #Punto 7
 def tipo_vehiculo_con_mayor_monto(v): #Punto 8
     pass
 
-def distancia_promedio(v):#Punto 9
+def distancia_promedio(v): #Punto 9
     pass
 
 def principal(): #Menu de opciones
