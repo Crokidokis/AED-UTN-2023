@@ -164,7 +164,7 @@ def buscar_codigo(v):  # Punto 5
         print("No hay resultados")
 
 
-def conteo_autos_por_pais(v):
+def conteo_autos_por_pais(v): # Punto 6
     vec_conteo = [0] * 7
 
 
