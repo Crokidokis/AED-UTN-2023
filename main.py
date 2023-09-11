@@ -20,8 +20,6 @@ def cargar_vector(): #Punto 1
             v.append(t)
     m.close()
     return v
-#OJO cada vez que se elija la opción "Crear arreglo desde registros" el arreglo debe ser creado de nuevo desde cero, perdiendo todos los registros que ya hubiese contenido.
-#Falta implementar funcionalidad: Antes de eliminar el viejo arreglo, se muestre en pantalla un mensaje de advertencia al usuario de forma que tenga la opción de cancelar la operación.
 
 
 def cargar_ticket_por_teclado(v): # Punto 2
@@ -80,6 +78,7 @@ def mostrar_datos(v):
     for i in range(len(v)):
         print(v[i])
 
+paises = ("Argentina", "Bolivia", "Brasil", "Paraguay", "Uruguay", "Chile", "Otro")
 
 def determinar_pais(v):
     for i in range(len(v)):
@@ -88,38 +87,38 @@ def determinar_pais(v):
             if 'A' <= patente[1] <= 'Z' and 'A' <= patente[2] <= 'Z' and 'A' <= patente[3] <= 'Z' and 'A' <= patente[4] \
                     <= 'Z':
                 if '0' <= patente[5] <= '9' and '0' <= patente[5] <= '9':
-                    pais_patente = 'Chile'
+                    pais_patente = paises[5]
                 else:
-                    pais_patente = 'Otro'
+                    pais_patente = paises[6]
             else:
-                pais_patente = 'Otro'
+                pais_patente = paises[6]
         elif 'A' <= patente[0] <= 'Z' and 'A' <= patente[1] <= 'Z':
             if '0' <= patente[2] <= '9':
                 if '0' <= patente[3] <= '9' and '0' <= patente[4] <= '9':
                     if '0' <= patente[5] <= '9' and '0' <= patente[5] <= '9':
-                        pais_patente = 'Bolivia'
+                        pais_patente = paises[1]
                     elif 'A' <= patente[5] <= 'Z' and 'A' <= patente[5] <= 'Z':
-                        pais_patente = 'Argentina'
+                        pais_patente = paises[0]
                     else:
-                        pais_patente = 'Otro'
+                        pais_patente = paises[6]
                 else:
-                    pais_patente = 'Otro'
+                    pais_patente = paises[6]
             elif 'A' <= patente[3] <= 'Z':
                 if '0' <= patente[4] <= '9' and '0' <= patente[5] <= '9' and '0' <= patente[5] <= '9':
-                    pais_patente = 'Paraguay'
+                    pais_patente = paises[3]
                 else:
-                    pais_patente = 'Otro'
+                    pais_patente = paises[6]
             elif '0' <= patente[4] <= '9':
                 if '0' <= patente[5] <= '9' and '0' <= patente[5] <= '9':
-                    pais_patente = 'Uruguay'
+                    pais_patente = paises[4]
                 else:
-                    pais_patente = 'Otro'
+                    pais_patente = paises[6]
             elif '0' <= patente[5] <= '9' and '0' <= patente[5] <= '9':
-                pais_patente = 'Brasil'
+                pais_patente = paises[2]
             else:
-                pais_patente = 'Otro'
+                pais_patente = paises[6]
         else:
-            pais_patente = 'Otro'
+            pais_patente = paises[6]
         v[i].pais_patente = pais_patente
 
 
@@ -164,16 +163,16 @@ def buscar_codigo(v): # Punto 5
         print("No hay resultados")
 
 
-def conteo_autos_por_pais(v): # Punto 6
-    contar_por_pais_auto = {}
-    for ticket in v:
-        pais = ticket.pais
-        if pais not in contar_por_pais_auto:
-            contar_por_pais_auto[pais] = 1
-        else:
-            contar_por_pais_auto[pais] += 1
-    for pais, cantidad in contar_por_pais_auto.items():
-        print(f"País: {pais} | Cantidad de autos: {cantidad}")
+def conteo_autos_por_pais(v):
+    vec_conteo = [0] * 7
+
+
+
+
+
+
+
+
 
 def calcular_importe_acumulado(v): #Punto 7
     acumulado_tipo_0 = 0
@@ -276,14 +275,12 @@ def principal(): # Menu de opciones
                 print('-' * 50)
             else:
                 pass
-        # OJO cada vez que se elija la opción "Crear arreglo desde registros" el arreglo debe ser creado de nuevo desde cero, perdiendo todos los registros que ya hubiese contenido.
-        # Falta implementar funcionalidad: Antes de eliminar el viejo arreglo, se muestre en pantalla un mensaje de advertencia al usuario de forma que tenga la opción de cancelar la operación.
         elif opcion == "2":
             print('-' * 50, '\nPUNTO 2\n', '-' * 50)
             cargar_ticket_por_teclado(v)
             print('Datos cargados con exito')
             print('-' * 50)
-        elif opcion == "3": #Introducir mensaje de error cuando se seleccione la opcion 3 sin haber realizado un  arreglo (osea haber elegido la opcion 1)
+        elif opcion == "3":
             print('-' * 150, '\nPUNTO 3\n', '-' * 150)
             mostrar_datos(v)
             print('-' * 150)
