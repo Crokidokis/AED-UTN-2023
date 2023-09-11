@@ -1,7 +1,7 @@
 from ticket import Ticket
 
 
-def cargar_vector(): #Punto 1
+def cargar_vector():  # Punto 1
     primera = True
     v = []
     m = open('peajes-tp3.txt', 'rt')
@@ -21,8 +21,7 @@ def cargar_vector(): #Punto 1
     m.close()
     return v
 
-
-def cargar_ticket_por_teclado(v): # Punto 2
+def cargar_ticket_por_teclado(v):  # Punto 2
     codigo = input("Ingrese el código del ticket (debe ser numérico):")
     while not codigo.isdigit():
         print("El código tiene que ser numérico.")
@@ -64,7 +63,7 @@ def cargar_ticket_por_teclado(v): # Punto 2
     print("Ticket agregado exitosamente.")
 
 
-def ordenar_vector(v): # Punto 3
+def ordenar_vector(v):  # Punto 3
     determinar_pais(v)
     n = len(v)
     for i in range(n - 1):
@@ -122,16 +121,18 @@ def determinar_pais(v):
         v[i].pais_patente = pais_patente
 
 
-def buscar_patente(v): # Punto 4
+def buscar_patente(v):  # Punto 4
     determinar_pais(v)
     patente = input("Ingrese la patente a buscar:")
     while not patente.isdigit() and patente.isalpha():
         print("La patente debe tener SOLO numeros y/o letras.")
         patente = input("Ingrese la patente a buscar: ")
-    x = int(input("Ingrese el pais por el que paso la patente (0: Argentina, 1: Bolivia, 2: Brasil, 3: Paraguay, 4: Uruguay):"))
+    x = int(input(
+        "Ingrese el pais por el que paso la patente (0: Argentina, 1: Bolivia, 2: Brasil, 3: Paraguay, 4: Uruguay):"))
     while x not in [0, 1, 2, 3, 4]:
         print("País incorrecto, ingrese uno válido.")
-        x = int(input("Ingrese el pais por el que paso la patente (0: Argentina, 1: Bolivia, 2: Brasil, 3: Paraguay, 4: Uruguay):"))
+        x = int(input(
+            "Ingrese el pais por el que paso la patente (0: Argentina, 1: Bolivia, 2: Brasil, 3: Paraguay, 4: Uruguay):"))
     existe = False
     for i in range(len(v)):
         if patente == v[i].patente and x == v[i].pais:
@@ -142,7 +143,7 @@ def buscar_patente(v): # Punto 4
         print("No hay resultados")
 
 
-def buscar_codigo(v): # Punto 5
+def buscar_codigo(v):  # Punto 5
     c = input("Ingrese un codigo a buscar en el registro:")
     while not c.isdigit():
         print("El código debe ser numérico.")
@@ -174,62 +175,53 @@ def conteo_autos_por_pais(v):
 
 
 
-def calcular_importe_acumulado(v): #Punto 7
-    acumulado_tipo_0 = 0
-    acumulado_tipo_1 = 0
-    acumulado_tipo_2 = 0
-    
-    for ticket in v:
-        if ticket.tipo_vehiculo == 0:
-            acumulado_tipo_0 += ticket.pago
-        elif ticket.tipo_vehiculo == 1:
-            acumulado_tipo_1 += ticket.pago
-        elif ticket.tipo_vehiculo == 2:
-            acumulado_tipo_2 += ticket.pago
 
-    print("Importe acumulado por tipo de vehículo:")
-    print("Motocicletas (Tipo 0):", acumulado_tipo_0)
-    print("Automóviles (Tipo 1):", acumulado_tipo_1)
-    print("Camiones (Tipo 2):", acumulado_tipo_2)
+def calcular_monto(v):  # Punto 7
+    acum = 3*[0]
+    for i in range(len(v)):
+        importe_basico = 300
+        if v[i].pais == 1:
+            importe_basico = 200
+        elif v[i].pais == 2:
+            importe_basico = 400
 
-def tipo_vehiculo_con_mayor_monto(v): #Punto 8
-    total_tipo_0 = 0
-    total_tipo_1 = 0
-    total_tipo_2 = 0
-    
-    for ticket in v:
-        if ticket.tipo_vehiculo == 0:
-            total_tipo_0 += ticket.pago
-        elif ticket.tipo_vehiculo == 1:
-            total_tipo_1 += ticket.pago
-        elif ticket.tipo_vehiculo == 2:
-            total_tipo_2 += ticket.pago
-    
-    tipo_con_mayor_monto = None
-    monto_mayor = 0
-    
-    if total_tipo_0 > monto_mayor:
-        monto_mayor = total_tipo_0
-        tipo_con_mayor_monto = "Motocicletas (Tipo 0)"
-    
-    if total_tipo_1 > monto_mayor:
-        monto_mayor = total_tipo_1
-        tipo_con_mayor_monto = "Automóviles (Tipo 1)"
-    
-    if total_tipo_2 > monto_mayor:
-        monto_mayor = total_tipo_2
-        tipo_con_mayor_monto = "Camiones (Tipo 2)"
-    
-    if tipo_con_mayor_monto is not None:
-        porcentaje = (monto_mayor / sum([total_tipo_0, total_tipo_1, total_tipo_2])) * 100
-        print("El tipo de vehículo con mayor monto es:", tipo_con_mayor_monto)
-        print("Monto acumulado:", monto_mayor)
-        print("Porcentaje sobre el total:", round(porcentaje, 2), "%")
+        if v[i].pago == 2:
+            importe_basico = importe_basico - (importe_basico * 10 / 100)
+
+        if v[i].vehiculo == 0:
+            importe_final = importe_basico - (importe_basico * 50) / 100
+            acum[0] += importe_final
+        elif v[i].vehiculo == 1:
+            importe_final = importe_basico
+            acum[1] += importe_final
+        elif v[i].vehiculo == 2:
+            importe_final = importe_basico + (importe_basico * 60) / 100
+            acum[2] += importe_final
+
+    return acum
+
+
+def mayor_monto(acum): # Punto 8
+    total1 = acum[0]
+    total2 = acum[1]
+    total3 = acum[2]
+    suma = mayor = 0
+    vehiculos = ('Motocicleta', 'Automovil', 'Camión')
+    if total1 > total2 and total1 > total3:
+        print('Vehículo con mayor monto: ', vehiculos[0])
+        mayor = total1
+    elif total2 > total3:
+        print('Vehículo con mayor monto: ', vehiculos[1])
+        mayor = total2
     else:
-        print("No hay registros de vehículos.")
+        print('Vehículo con mayor monto: ', vehiculos[2])
+        mayor = total3
+
+    suma = total1 + total2 + total3
+    print('Su importe representa el ', round(mayor * 100 / suma, 2), '% del total.')
 
 
-def promediar_distancia(v): #Punto 9
+def promediar_distancia(v):  # Punto 9
     suma = 0
     contador = 0
     for i in range(len(v)):
@@ -250,7 +242,7 @@ def supera_promedio(v, prom):
     return acu_punto_9
 
 
-def principal(): # Menu de opciones
+def principal():  # Menu de opciones
     v = []
     while True:
         print("\nMENU DE OPCIONES:")
@@ -278,26 +270,41 @@ def principal(): # Menu de opciones
         elif opcion == "2":
             print('-' * 50, '\nPUNTO 2\n', '-' * 50)
             cargar_ticket_por_teclado(v)
-            print('Datos cargados con exito')
             print('-' * 50)
-        elif opcion == "3":
+        elif opcion == "3":  # Introducir mensaje de error cuando se seleccione la opcion 3 sin haber realizado un  arreglo (osea haber elegido la opcion 1)
             print('-' * 150, '\nPUNTO 3\n', '-' * 150)
             mostrar_datos(v)
             print('-' * 150)
         elif opcion == "4":
+            print('-' * 50, '\nPUNTO 4\n', '-' * 50)
             buscar_patente(v)
+            print('-' * 50)
         elif opcion == "5":
+            print('-' * 50, '\nPUNTO 5\n', '-' * 50)
             buscar_codigo(v)
+            print('-' * 50)
         elif opcion == "6":
+            print('-' * 50, '\nPUNTO 6\n', '-' * 50)
             conteo_autos_por_pais(v)
+            print('-' * 50)
         elif opcion == "7":
-            calcular_importe_acumulado(v)
+            print('-' * 50, '\nPUNTO 7\n', '-' * 50)
+            acum = calcular_monto(v)
+            print('Motocicleta: ', acum[0], '\nAutomóvil: ', acum[1], '\nCamión: ', acum[2])
+            print('-' * 50)
         elif opcion == "8":
-            tipo_vehiculo_con_mayor_monto(v)
+            print('-' * 50, '\nPUNTO 8\n', '-' * 50)
+            acum = calcular_monto(v)
+            mayor_monto(acum)
+            print('-' * 50)
         elif opcion == "9":
+            print('-' * 50, '\nPUNTO 9\n', '-' * 50)
             promediar_distancia(v)
+            print('-' * 50)
         elif opcion == "10":
+            print('-' * 50)
             print("Usted a salido del programa")
+            print('-' * 50)
             break
         else:
             print("Opción inválida, porfavor seleccione una opción válida.")
