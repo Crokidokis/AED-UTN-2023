@@ -181,11 +181,11 @@ def calcular_importe_acumulado(v): #Punto 7
     acumulado_tipo_2 = 0
     
     for ticket in v:
-        if ticket.tipo_vehiculo == 0:
+        if ticket.vehiculo == 0:
             acumulado_tipo_0 += ticket.pago
-        elif ticket.tipo_vehiculo == 1:
-            acumulado_tipo_1 += ticket.pago
-        elif ticket.tipo_vehiculo == 2:
+        elif ticket.vehiculo == 1:
+            acumulado_tipo_1 += ticket.pago        # cambie de tipo_vehiculo a vehiculo como esta en ticket en el 8 tambien
+        elif ticket.vehiculo == 2:
             acumulado_tipo_2 += ticket.pago
 
     print("Importe acumulado por tipo de vehículo:")
@@ -199,11 +199,11 @@ def tipo_vehiculo_con_mayor_monto(v): #Punto 8
     total_tipo_2 = 0
     
     for ticket in v:
-        if ticket.tipo_vehiculo == 0:
+        if ticket.vehiculo == 0:
             total_tipo_0 += ticket.pago
-        elif ticket.tipo_vehiculo == 1:
+        elif ticket.vehiculo == 1:
             total_tipo_1 += ticket.pago
-        elif ticket.tipo_vehiculo == 2:
+        elif ticket.vehiculo == 2:
             total_tipo_2 += ticket.pago
     
     tipo_con_mayor_monto = None
