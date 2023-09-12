@@ -1,22 +1,20 @@
 from ticket import Ticket
 
-
-def cargar_vector():  # Punto 1
+def cargar_vector():
     primera = True
     v = []
     m = open('peajes-tp3.txt', 'rt')
     for linea in m:
         if primera:
             primera = False
-        elif not primera:
+        else:
             codigo = linea[0:10]
             patente = linea[10:17]
-            pais_patente = None
             vehiculo = int(linea[17])
             pago = int(linea[18])
             pais = int(linea[19])
             distancia = int(linea[20:])
-            t = Ticket(codigo, patente, pais_patente, vehiculo, pago, pais, distancia)
+            t = Ticket(codigo, patente, vehiculo, pago, pais, distancia)
             v.append(t)
     m.close()
     return v
@@ -31,8 +29,6 @@ def cargar_ticket_por_teclado(v):  # Punto 2
     while not patente.isdigit() and patente.isalpha():
         print("La patente debe tener SOLO numeros y/o letras.")
         patente = input("Ingrese la patente del vehículo: ")
-
-    pais_patente = 0
 
     tipo_vehiculo = (input("Ingrese el tipo de vehículo (0: motocicleta, 1: automóvil, 2: camión): "))
     while tipo_vehiculo not in ['0', '1', '2']:
@@ -58,10 +54,9 @@ def cargar_ticket_por_teclado(v):  # Punto 2
         distancia = input("Ingrese la distancia en kilómetros (000 si es la primera cabina): ")
     distancia = int(distancia)
 
-    nuevo_ticket = Ticket(codigo, patente, pais_patente, tipo_vehiculo, forma_pago, pais, distancia)
+    nuevo_ticket = Ticket(codigo, patente, tipo_vehiculo, forma_pago, pais, distancia)
     v.append(nuevo_ticket)
     print("Ticket agregado exitosamente.")
-
 
 def ordenar_vector(v):  # Punto 3
     determinar_pais(v)
@@ -71,21 +66,21 @@ def ordenar_vector(v):  # Punto 3
             if int(v[i].codigo) > int(v[j].codigo):
                 v[i], v[j] = v[j], v[i]
 
-
 def mostrar_datos(v):
     ordenar_vector(v)
     for i in range(len(v)):
-        print(v[i])
+        patente_con_pais = f"{v[i].patente} ({v[i].pais_patente})"
+        print(f"Código: {v[i].codigo} | Patente: {patente_con_pais} | Tipo de vehículo: {v[i].vehiculo} | Forma de pago: {v[i].pago} | País de la cabina: {v[i].pais} | Distancia recorrida: {v[i].distancia}")
 
 paises = ("Argentina", "Bolivia", "Brasil", "Paraguay", "Uruguay", "Chile", "Otro")
 
 def determinar_pais(v):
     for i in range(len(v)):
         patente = v[i].patente
+        pais_patente = None
         if patente[0] == ' ':
-            if 'A' <= patente[1] <= 'Z' and 'A' <= patente[2] <= 'Z' and 'A' <= patente[3] <= 'Z' and 'A' <= patente[4] \
-                    <= 'Z':
-                if '0' <= patente[5] <= '9' and '0' <= patente[5] <= '9':
+            if 'A' <= patente[1] <= 'Z' and 'A' <= patente[2] <= 'Z' and 'A' <= patente[3] <= 'Z' and 'A' <= patente[4] <= 'Z':
+                if '0' <= patente[5] <= '9' and '0' <= patente[6] <= '9':
                     pais_patente = paises[5]
                 else:
                     pais_patente = paises[6]
@@ -94,32 +89,31 @@ def determinar_pais(v):
         elif 'A' <= patente[0] <= 'Z' and 'A' <= patente[1] <= 'Z':
             if '0' <= patente[2] <= '9':
                 if '0' <= patente[3] <= '9' and '0' <= patente[4] <= '9':
-                    if '0' <= patente[5] <= '9' and '0' <= patente[5] <= '9':
+                    if '0' <= patente[5] <= '9' and '0' <= patente[6] <= '9':
                         pais_patente = paises[1]
-                    elif 'A' <= patente[5] <= 'Z' and 'A' <= patente[5] <= 'Z':
+                    elif 'A' <= patente[5] <= 'Z' and 'A' <= patente[6] <= 'Z':
                         pais_patente = paises[0]
                     else:
                         pais_patente = paises[6]
                 else:
                     pais_patente = paises[6]
             elif 'A' <= patente[3] <= 'Z':
-                if '0' <= patente[4] <= '9' and '0' <= patente[5] <= '9' and '0' <= patente[5] <= '9':
+                if '0' <= patente[4] <= '9' and '0' <= patente[5] <= '9' and '0' <= patente[6] <= '9':
                     pais_patente = paises[3]
                 else:
                     pais_patente = paises[6]
             elif '0' <= patente[4] <= '9':
-                if '0' <= patente[5] <= '9' and '0' <= patente[5] <= '9':
+                if '0' <= patente[5] <= '9' and '0' <= patente[6] <= '9':
                     pais_patente = paises[4]
                 else:
                     pais_patente = paises[6]
-            elif '0' <= patente[5] <= '9' and '0' <= patente[5] <= '9':
+            elif '0' <= patente[5] <= '9' and '0' <= patente[6] <= '9':
                 pais_patente = paises[2]
             else:
                 pais_patente = paises[6]
         else:
             pais_patente = paises[6]
         v[i].pais_patente = pais_patente
-
 
 def buscar_patente(v):  # Punto 4
     determinar_pais(v)
@@ -142,7 +136,6 @@ def buscar_patente(v):  # Punto 4
     if not existe:
         print("No hay resultados")
 
-
 def buscar_codigo(v):  # Punto 5
     c = input("Ingrese un codigo a buscar en el registro:")
     while not c.isdigit():
@@ -163,18 +156,17 @@ def buscar_codigo(v):  # Punto 5
     if not existe:
         print("No hay resultados")
 
+def conteo_autos_por_pais(v):
+    vec_conteo = [0] * len(paises)
 
-def conteo_autos_por_pais(v): # Punto 6
-    vec_conteo = [0] * 7
+    for i in range(len(v)):
+        determinar_pais([v[i]])  # Invoca determinar_pais para identificar el país de procedencia
+        pais_patente = v[i].pais_patente
+        indice_pais = paises.index(pais_patente)
+        vec_conteo[indice_pais] += 1
 
-
-
-
-
-
-
-
-
+    for i in range(len(paises)):
+        print(f"Cantidad de vehículos de {paises[i]}: {vec_conteo[i]}")
 
 def calcular_monto(v):  # Punto 7
     acum = 3*[0]
@@ -200,7 +192,6 @@ def calcular_monto(v):  # Punto 7
 
     return acum
 
-
 def mayor_monto(acum): # Punto 8
     total1 = acum[0]
     total2 = acum[1]
@@ -220,7 +211,6 @@ def mayor_monto(acum): # Punto 8
     suma = total1 + total2 + total3
     print('Su importe representa el ', round(mayor * 100 / suma, 2), '% del total.')
 
-
 def promediar_distancia(v):  # Punto 9
     suma = 0
     contador = 0
@@ -233,14 +223,12 @@ def promediar_distancia(v):  # Punto 9
     print(f"Promedio de distancia: {promedio} km")
     print(f"Cantidad de vehículos que superaron el promedio: {vehiculos_superan}")
 
-
 def supera_promedio(v, prom):
     acu_punto_9 = 0
     for i in range(len(v)):
         if v[i].distancia > prom:
             acu_punto_9 += 1
     return acu_punto_9
-
 
 def principal():  # Menu de opciones
     v = []
@@ -308,7 +296,6 @@ def principal():  # Menu de opciones
             break
         else:
             print("Opción inválida, porfavor seleccione una opción válida.")
-
 
 if __name__ == '__main__':
     principal()
